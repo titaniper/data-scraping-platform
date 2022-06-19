@@ -72,11 +72,13 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <ul class="list-unstyled mb-0">
-                                     {% for p in pipelines %}
-
-                                     {% endfor %}
+                                  {% for c in categories %}
+                                        <li>
+                                            <a href="{{ c.get_absolute_url }}">{{ c.name }} ({{ c.pipeline_set.count }})</a>
+                                        </li>
+                                    {% endfor %}
                                     <li>
-                                        <a href="#">미분류</a>
+                                        <a href="/category/no-category">미분류 ({{ count_pipeline_without_category }})</a>
                                     </li>
                                 </ul>
                             </div>

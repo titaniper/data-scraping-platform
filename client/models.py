@@ -4,6 +4,8 @@ from turtle import mode
 from django.contrib.auth.models import User
 from django.db import models
 
+from . import enums
+
 # Create your models here.
 from markdown import markdown
 from markdownx.models import MarkdownxField
@@ -16,7 +18,7 @@ class Tag(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return f'/clients/tag/{self.slug}'
+        return f'/tag/{self.slug}'
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -26,7 +28,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return f'/clients/category/{self.slug}'
+        return f'/category/{self.slug}'
 
     class Meta:
         verbose_name_plural = 'categories'
@@ -46,7 +48,7 @@ class Request(models.Model):
         return f'[{self.pk}]  [{self.name}] :: {self.url}'
 
     def get_absolute_url(self):
-        return f'/clients/requests/{self.pk}/'
+        return f'/requests/{self.pk}/'
 
     def get_markdown_description(self):
         return markdown(self.description)
@@ -63,7 +65,7 @@ class RequestHistory(models.Model):
         return f'[{self.pk}]  [{self.name}]'
 
     def get_absolute_url(self):
-        return f'/clients/request-histories/{self.pk}/'
+        return f'/request-histories/{self.pk}/'
 
     class Meta:
         verbose_name_plural = 'request-histories'
@@ -72,13 +74,15 @@ class Pipeline(models.Model):
     title = models.CharField(max_length=30)
     description = MarkdownxField()
     hook_msg = models.TextField(blank=True)
-    head_image = models.ImageField(upload_to='blog/images/%Y/%m/%d/', blank=True)
-    attached_file = models.FileField(upload_to='blog/files/%Y/%m/%d/', blank=True)
+    head_image = models.ImageField(upload_to='client/images/%Y/%m/%d/', blank=True)
+    attached_file = models.FileField(upload_to='client/files/%Y/%m/%d/', blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     tags = models.ManyToManyField(Tag, blank=True)
-    aggregated_status = models.TextField(blank=False)
-    pipe_line_status = models.TextField(blank=False)
+
+    aggregated_status = models.CharField(max_length=255, choices=enums.AggregatedStatus.choices())
+    pipe_line_status = models.CharField(max_length=255, choices=enums.PipelineStatus.choices())
+
     last_success_at = models.DateTimeField(null=True, blank=True)
     last_failure_at = models.DateTimeField(null=True, blank=True)
     last_duration = models.TextField(blank=True)
@@ -89,7 +93,7 @@ class Pipeline(models.Model):
         return f'[{self.pk}]  [{self.title}] :: {self.author}'
 
     def get_absolute_url(self):
-        return f'/clients/pipelines/{self.pk}/'
+        return f'/{self.pk}/'
 
     def get_file_name(self):
         return os.path.basename(self.attached_file.name)
@@ -105,8 +109,8 @@ class Stage(models.Model):
     description = MarkdownxField()
     pipeline = models.ForeignKey(Pipeline, on_delete=models.CASCADE)
     request = models.ManyToManyField(Request, blank=True)
-    status = models.TextField(blank=False)
-    pipe_line_status = models.TextField(blank=False)
+    status = models.CharField(max_length=255, choices=enums.AggregatedStatus.choices())
+    pipe_line_status = models.CharField(max_length=255, choices=enums.PipelineStatus.choices())
     last_success_at = models.DateTimeField(null=True, blank=True)
     last_failure_at = models.DateTimeField(null=True, blank=True)
     last_duration = models.TextField(blank=True)
