@@ -18,7 +18,7 @@ class Tag(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return f'/tag/{self.slug}'
+        return f'/pipelines/tag/{self.slug}'
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -28,7 +28,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return f'/category/{self.slug}'
+        return f'/pipelines/category/{self.slug}'
 
     class Meta:
         verbose_name_plural = 'categories'
@@ -68,7 +68,7 @@ class RequestHistory(models.Model):
         return f'/request-histories/{self.pk}/'
 
     class Meta:
-        verbose_name_plural = 'request-histories'
+        verbose_name_plural = 'requesthistories'
 
 class Pipeline(models.Model):
     title = models.CharField(max_length=30)
@@ -93,7 +93,7 @@ class Pipeline(models.Model):
         return f'[{self.pk}]  [{self.title}] :: {self.author}'
 
     def get_absolute_url(self):
-        return f'/{self.pk}/'
+        return f'/pipelines/{self.pk}/'
 
     def get_file_name(self):
         return os.path.basename(self.attached_file.name)
@@ -108,7 +108,7 @@ class Stage(models.Model):
     title = models.CharField(max_length=30)
     description = MarkdownxField()
     pipeline = models.ForeignKey(Pipeline, on_delete=models.CASCADE)
-    request = models.ManyToManyField(Request, blank=True)
+    requests = models.ManyToManyField(Request, blank=True)
     status = models.CharField(max_length=255, choices=enums.AggregatedStatus.choices())
     pipe_line_status = models.CharField(max_length=255, choices=enums.PipelineStatus.choices())
     last_success_at = models.DateTimeField(null=True, blank=True)
@@ -120,8 +120,14 @@ class Stage(models.Model):
     def __str__(self):
         return f'[{self.pk}]  [{self.title}]'
 
+    def get_absolute_url(self):
+        return f'/stages/{self.pk}/'
+
     def get_markdown_description(self):
         return markdown(self.description)
+
+    class Meta:
+        verbose_name_plural = 'stages'
 
 class Comment(models.Model):
     pipeline = models.ForeignKey(Pipeline, on_delete=models.CASCADE)
@@ -134,4 +140,4 @@ class Comment(models.Model):
         return f'{self.author} - {self.content}'
 
     def get_absolute_url(self):
-        return f'{self.post.get_absolute_url()}#comment-{self.pk}'
+        return f'{self.pipeline.get_absolute_url()}#comment-{self.pk}'

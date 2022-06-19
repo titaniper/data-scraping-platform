@@ -4,5 +4,6 @@
  * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-blog-post/blob/master/LICENSE)
  */
 body {
+  background-color: #efefef; margin: 0;
   padding-top: 56px;
 }

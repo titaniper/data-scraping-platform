@@ -1,0 +1,62 @@
+{% extends 'client/base2.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    <title>Stage - {{ stage.title }}</title>
+{% endblock %}
+
+        {% block main_area %}
+      <!-- Post Content Column -->
+      <div class="col-lg-12" style="background-color: white; border: 1px solid #ededed; padding: 10px;">
+        <h1>Stage Info</h1>
+<!--        {% if user.is_authenticated and user == pipeline.author %}-->
+<!--            <a href = "update">Update Stage</a>-->
+<!--        {% endif %}-->
+
+        <!-- Title -->
+        <h3 class="mt-4">{{ stage.title }}</h3>
+
+        <hr>
+
+        <!-- Date/Time -->
+        <p>Posted on {{ stage.created_at }}</p>
+
+        <hr>
+
+        <!-- Post Content -->
+        <p>{{ pipeline.get_markdown_description | safe }}</p>
+    </div>
+
+    <div style="background-color: white; border: 1px solid #ededed; padding: 10px; margin-top: 4px;">
+        <div class="row">
+            <div class="col-6">
+                <h1>Add Request</h1>
+                {% if user.is_authenticated %}
+                    {% if user.is_staff or user.is_superuser %}
+                        <form method="post" action="{{ stage.get_absolute_url }}add-request/">
+                           {% csrf_token %}
+                          {{ request_form | crispy }}
+                          <button type="submit" class="btn btn-primary">Add Request</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="col-6">
+                <h1>Requests</h1>
+                {% for request in requests %}
+                    <a href="{{ request.get_absolute_url }}" style="color:black; margin: 10px;">
+                        <div class="card" style="background-color: white; margin-top: 10px">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ request.name }}</h6>
+                                <p class="card-title">Description: {{ request.description }}</p>
+                                <p class="card-title">HTTP Method: {{ request.method }}</p>
+                                <p class="card-title">URL: {{ request.url }}</p>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+

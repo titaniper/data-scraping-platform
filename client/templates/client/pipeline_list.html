@@ -7,7 +7,7 @@
 {% block main_area %}
                 {% if user.is_authenticated %}
                     {% if user.is_staff or user.is_superuser %}
-                        <a href = "/create_pipeline" role="button"> Create Pipeline</a>
+                        <a href = "create_pipeline" role="button"> Create Pipeline</a>
                     {% endif %}
                 {% endif %}
 

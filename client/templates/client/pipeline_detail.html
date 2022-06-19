@@ -6,14 +6,14 @@
 
         {% block main_area %}
       <!-- Post Content Column -->
-      <div class="col-lg-8">
-
+      <div class="col-lg-12" style="background-color: white; border: 1px solid #ededed; padding: 10px;">
+        <h1>Pipeline Info</h1>
         {% if user.is_authenticated and user == pipeline.author %}
-            <a href = "/update_post/{{ pipeline.pk }}">Update Pipeline</a>
+            <a href = "update_pipeline">Update Pipeline</a>
         {% endif %}
 
         <!-- Title -->
-        <h1 class="mt-4">{{ pipeline.title }}</h1>
+        <h3 class="mt-4">{{ pipeline.title }}</h3>
 
         <!-- Author -->
         <p class="lead">
@@ -26,9 +26,8 @@
         <!-- Date/Time -->
         <p>Posted on {{ pipeline.created_at }}</p>
 
-        <hr>
-
           {% if pipeline.head_image %}
+            <hr>
                   <!-- Preview Image -->
               <img class="img-fluid rounded" src="{{ pipeline.head_image.url }}" alt="">
 
@@ -59,7 +58,7 @@
           <div class="card-body">
             <form method="post" action="{{ pipeline.get_absolute_url }}addcomment/">
                 {% csrf_token %}
-              {{ comment_form | crispy }}
+               {{ comment_form | crispy }}
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
@@ -79,4 +78,33 @@
       {% endif %}
 
       </div>
-        {% endblock %}
+
+    <div style="background-color: white; border: 1px solid #ededed; padding: 10px; margin-top: 15px;">
+        <h1>Stage Info</h1>
+        {% if user.is_authenticated %}
+            {% if user.is_staff or user.is_superuser %}
+                <form method="post" action="{{ pipeline.get_absolute_url }}add-stage/">
+                   {% csrf_token %}
+                  {{ stage_form | crispy }}
+                  <button type="submit" class="btn btn-primary">Add Stage</button>
+                </form>
+<!--                <a href = "pipelines/create_pipeline" role="button"> Create Stage</a>-->
+            {% endif %}
+         {% endif %}
+    </div>
+
+    <div style="background-color: white; border: 1px solid #ededed; padding: 10px; margin-top: 4px;">
+         {% for stage in stages %}
+            <a href="{{ stage.get_absolute_url }}" style="color:black; margin: 10px;">
+                <div class="card" style="background-color: white; margin-top: 10px">
+                    <div class="card-body">
+                        <h3 class="card-title">[Stage] {{ stage.title}} </h3>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    {% endblock %}
+
+

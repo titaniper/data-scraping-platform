@@ -4,12 +4,13 @@
 <head>
     {% block title %}
     {% endblock %}
+        <link rel="stylesheet" href="{% static 'client/css/common.css' %}" media="screen">
         <link rel="stylesheet" href="{% static 'client/bootstrap/bootstrap.min.css' %}" media="screen">
 
     <script src="https://kit.fontawesome.com/726bbd6862.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body style="width:auto; height: 100%; background-color: #efefef; margin: 0; padding: 0;">
     {% include 'client/navbar.html' %}
 
     <!-- Modal -->
@@ -78,7 +79,7 @@
                                         </li>
                                     {% endfor %}
                                     <li>
-                                        <a href="/category/no-category">미분류 ({{ count_pipeline_without_category }})</a>
+                                        <a href="/pipelines/category/no-category">미분류 ({{ count_pipeline_without_category }})</a>
                                     </li>
                                 </ul>
                             </div>

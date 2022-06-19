@@ -1,0 +1,99 @@
+{% extends 'client/base2.html' %}
+
+{% block title %}
+    <title>Pipeline</title>
+{% endblock %}
+
+{% block main_area %}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1>Pipeline
+                        {% if category %} in category '{{ category }}' {% endif %}
+                        {% if tag %} with tag '{{ tag }}' {% endif %}
+                        </h1>
+
+                        {% for p in pipelines %}
+                            <a href="{{ p.get_absolute_url }}" style="color:black">
+                                <div class="card mb-4 " style="background-color: white;">
+                                    <div class="card-body">
+                                        <h3 class="card-title">{{ p.title}}</h3>
+                                    </div>
+                                    <div class="card-footer" style="color:#555555">
+                                         <div class="row">
+                                             <div class="col-md-8">
+                                                Last success {{ p.last_success_at|date:"M d, Y" }} <br/>
+                                                 Last failure {{ p.last_failure_at|date:"M d, Y" }}
+                                            </div>
+                                            <div class="col-md-4">
+                                               Status {{ p.aggregated_status }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <h1>Stages</h1>
+
+                         {% for p in stages %}
+                            <a href="{{ p.get_absolute_url }}" style="color:black">
+                                <div class="card mb-4 " style="background-color: white;">
+                                    <div class="card-body">
+                                        <h3 class="card-title">{{ p.title }}</h3>
+                                    </div>
+                                    <div class="card-footer" style="color:#555555">
+                                         <div class="row">
+                                            <div class="col-md-4">
+                                               Status {{ p.status }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <h1>Requests</h1>
+
+                        {% for p in requests %}
+                            <a href="{{ p.get_absolute_url }}" style="color:black">
+                                <div class="card mb-4 " style="background-color: white;">
+                                    <div class="card-body">
+                                        <h3 class="card-title">{{ p.name }}</h3>
+                                    </div>
+                                    <div class="card-footer" style="color:#555555">
+                                         <div class="row">
+                                             url: {{ p.url }}
+                                             <br/>
+                                               method: {{ p.method }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <h1>Request History</h1>
+
+                         {% for p in histories %}
+                            <a href="{{ p.get_absolute_url }}" style="color:black">
+                                <div class="card mb-4" style="background-color: white;">
+                                    <div class="card-body">
+                                        <h3 class="card-title">{{ p.name}}</h3>
+                                    </div>
+                                    <div class="card-footer" style="color:#555555">
+                                         <div class="row">
+                                            <div class="col-md-12">
+                                               Status {{ p.status }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'client/base2.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    <title>Request - {{ stage.title }}</title>
+{% endblock %}
+
+        {% block main_area %}
+      <!-- Post Content Column -->
+      <div class="col-lg-12" style="background-color: white; border: 1px solid #ededed; padding: 10px;">
+        <h1>Request Info</h1>
+<!--        {% if user.is_authenticated and user == pipeline.author %}-->
+<!--            <a href = "update">Update Stage</a>-->
+<!--        {% endif %}-->
+
+        <!-- Title -->
+        <h3 class="mt-4">{{ detail.name }}</h3>
+        <hr>
+        <p>method: {{ detail.method }}</p>
+        <hr>
+        <p>url: {{ detail.url }}</p>
+        <hr>
+        <p>description: {{ detail.description }}</p>
+        <hr>
+        <p>Posted on {{ detail.created_at }}</p>
+        <hr>
+        <form method="post" action="{{ detail.get_absolute_url }}action/">
+             {% csrf_token %}
+          <button type="submit" class="btn btn-primary">Action</button>
+        </form>
+    </div>
+
+    <div style="background-color: white; border: 1px solid #ededed; padding: 10px; margin-top: 4px;">
+            <div class="col-12">
+                <h1>Histories</h1>
+                {% for history in histories %}
+                    <a href="{{ request.get_absolute_url }}" style="color:black; margin: 10px;">
+                        <div class="card" style="background-color: white; margin-top: 10px">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ history.name }}</h6>
+                                <p class="card-title">request: {{ history.request }}</p>
+                                <p class="card-title">status: {{ history.status }}</p>
+                                <p class="card-title">result: {{ history.result }}</p>
+                                <p class="card-title">created_at: {{ history.created_at }}</p>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+    </div>
+    {% endblock %}
+
+

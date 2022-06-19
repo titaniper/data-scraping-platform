@@ -1,0 +1,32 @@
+{% extends 'client/base2.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    <title>Request - {{ requesthistory.name }}</title>
+{% endblock %}
+
+        {% block main_area %}
+      <!-- Post Content Column -->
+      <div class="col-lg-12" style="background-color: white; border: 1px solid #ededed; padding: 10px;">
+        <h1>Request History Info</h1>
+<!--        {% if user.is_authenticated and user == pipeline.author %}-->
+<!--            <a href = "update">Update Stage</a>-->
+<!--        {% endif %}-->
+
+        <!-- Title -->
+        <h3 class="mt-4">{{ requesthistory.name }}</h3>
+
+        <hr>
+
+        <!-- Date/Time -->
+        <p>Posted on {{ requesthistory.created_at }}</p>
+
+        <hr>
+
+        <!-- Post Content -->
+        <p>{{ requesthistory.result }}</p>
+    </div>
+
+
+    {% endblock %}
+
+

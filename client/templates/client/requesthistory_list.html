@@ -1,0 +1,38 @@
+{% extends 'client/base2.html' %}
+
+{% block title %}
+    <title>Histories</title>
+{% endblock %}
+
+{% block main_area %}
+                <h1>Histories</h1>
+
+                {% for p in histories %}
+                <!-- Blog Post -->
+                    <a href="{{ p.get_absolute_url }}" style="color:black">
+                        <div class="card mb-4" style="background-color: white;">
+                            <div class="card-body">
+                                <h3 class="card-title">{{ p.name}}</h3>
+                            </div>
+                            <div class="card-footer" style="color:#555555">
+                                 <div class="row">
+                                    <div class="col-md-12">
+                                       Status {{ p.status }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+
+
+                <!-- Pagination -->
+                <ul class="pagination justify-content-center mb-4">
+                    <li class="page-item">
+                        <a class="page-link" href="#">&larr; Older</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Newer &rarr;</a>
+                    </li>
+                </ul>
+{% endblock %}
